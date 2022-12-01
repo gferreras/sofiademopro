@@ -75,16 +75,69 @@ Bot Test page
 	var userLang = navigator.language || navigator.userLanguage; 
 	var initESW = function(gslbBaseURL) {
 		embedded_svc.settings.displayHelpButton = true; //Or false
-		/*if(userLang=="es-ES" || userLang=="en-ES"){
-			embedded_svc.settings.language = 'es';
-		}else if(userLang=="pt-BR" || userLang=="pt_BR"){
-			embedded_svc.settings.language = 'pt_BR';
-		}else if(userLang=="en-US" || userLang=="en_US"){
-			embedded_svc.settings.language = 'en-US';
-		}else{
-			embedded_svc.settings.language = '';
-		}*/
-		embedded_svc.settings.language = ''; //For example, enter 'en' or 'en-US' 'en-US', 'pt_BR', 'es'
+		embedded_svc.settings.language = 'es'; //For example, enter 'en' or 'en-US' 'en-US', 'pt_BR', 'es'
+		var lang = embedded_svc.settings.language;
+		var firstNameEN = 'First Name';
+		var firstNameSP = 'Nombre';
+		var firstNamePT = 'Primeiro Nome';
+		var lastNameEN = 'Last Name';
+		var lastNameSP = 'Apellidos';
+		var lastNamePT = 'Sobrenome';
+		var emailEN = 'Email';
+		var emailSP = 'Correo electrónico';
+		var emailPT = 'Email';
+		var languageEN = 'Language';
+		var languageSP = 'Idioma';
+		var languagePT = 'Idioma';
+		var Country = 'Country';
+		var Source = 'Source';
+		var CustomerId = 'CustomerId';
+		var varFirstName = '';
+		var varLastName = '';
+		var varLanguage = '';
+		var varEmail = '';
+		var varTalk = '';
+		var varLanguageValue ='';
+		var isLogged = false;
+		var varCountry = '';
+		var varSource = 'Web'; // App or Web
+		var varCustomerId = '60f1d94ce603b0006a470f38';
+		if(lang=='en_US'){
+			varFirstName = firstNameEN;
+			varLastName = lastNameEN;
+			varLanguage = languageEN;
+			varEmail = emailEN;
+			varTalk = 'Talk to Sofia';
+			varLanguageValue ='en_US';
+			varCountry='AW';
+		} else if (lang=='es'){
+			varFirstName = firstNameSP;
+			varLastName = lastNameSP;
+			varLanguage = languageSP;
+			varEmail = emailSP;
+			varTalk = 'Hablar con Sofia';
+			varLanguageValue ='es';
+			varCountry='MX';
+		} else if (lang=='pt_BR'){
+			varFirstName = firstNamePT;
+			varLastName = lastNamePT;
+			varLanguage = languagePT;
+			varEmail = emailPT;
+			varTalk = 'Falar com a Sofia';
+			varLanguageValue ='pt_BR';
+			varCountry='BR';
+		}
+		console.log("lang: "+lang);
+		console.log("varFirstName: "+varFirstName);
+		console.log("varLastName: "+varLastName);
+		console.log("varEmail: "+varEmail);
+		console.log("varLanguage: "+varLanguage);
+		console.log("varTalk: "+varTalk);
+		console.log("varLanguageValue: "+varLanguageValue);
+		console.log("isLogged: "+isLogged);
+		console.log("Country: "+varCountry);
+		console.log("Source: "+varSource);
+		console.log("CustomerId: "+varCustomerId);
 		
 		//embedded_svc.settings.prechatBackgroundImgURL = "..." //360x100 pixels Pre-Chat Banner, Specify a URL to set an image in the pre-chat form below the header and above the fields.
 		//embedded_svc.settings.smallCompanyLogoImgURL = 'https://images.prismic.io/prod-axa/40a8d53b-fd99-459a-9996-a88ba24e7f48_BoldChat+Icon.png' //36x36 pixels Logo for Header and Minimized Chat, Specify a URL to set the logo for the chat header and minimized chat.
@@ -103,26 +156,57 @@ Bot Test page
 			// Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
 			// Returns a valid button ID.
 		//};
+		if(isLogged==true){
+			embedded_svc.settings.prepopulatedPrechatFields = {
+			FirstName: "Test",
+			LastName: "Test Brasil",
+			Email: "vdbsone@yopmail.com",
+			Language__c: varLanguageValue
+			}; //Sets the auto-population of pre-chat form fields
+		}else{
+			embedded_svc.settings.prepopulatedPrechatFields = {
+			FirstName: "Test",
+			LastName: "Test Brasil",
+			Email: "vdbsone@yopmail.com",
+			Language__c: varLanguageValue
+			}; //Sets the auto-population of pre-chat form fields
+		}
 		//embedded_svc.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
 		//embedded_svc.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
 		//embedded_svc.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
 		//console.log("Paso por aqui");
-		embedded_svc.settings.extraPrechatFormDetails = [ 
-		{
-			"label": "Last Name",
+		embedded_svc.settings.extraPrechatFormDetails = [{
+			"label": varLastName,
 			"transcriptFields":[ "LastName__c" ],
-			"displayToAgent": true
-        	},
-		{
-			"label": "First Name",
+			"displayToAgent":true
+        	},{
+			"label": varFirstName,
 			"transcriptFields":[ "FirstName__c" ],
-			"displayToAgent": true
-        	}
-		,
-		{
-			"label": "Email",
+			"displayToAgent":true
+        	},{
+			"label": varEmail,
 			"transcriptFields":[ "Email__c" ],
-			"displayToAgent": true
+			"displayToAgent":true
+        	},{
+			"label": varLanguage,
+			"value": varLanguageValue,
+			"transcriptFields":[ "Language__c" ],
+			"displayToAgent":true
+        	},{
+			"label": Country,
+			"value": varCountry,
+			"transcriptFields":[ "Country__c" ],
+			"displayToAgent":true
+        	},{
+			"label": Source,
+			"value": varSource,
+			"transcriptFields":[ "Source__c" ],
+			"displayToAgent":true
+        	},{
+			"label": CustomerId,
+			"value": varCustomerId,
+			"transcriptFields":[ "Customer_Identifier__c" ],
+			"displayToAgent":true
         	}];
 		embedded_svc.settings.enabledFeatures = ['LiveAgent'];
 		embedded_svc.settings.entryFeature = 'LiveAgent';
